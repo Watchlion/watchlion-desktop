@@ -1,0 +1,175 @@
+{
+	"protocol": "0.0.1",
+	
+	"version": "001",
+	"update" : "2015.08.04 05:47:50",
+	"applications" : [
+		{
+			"id" : "nodejs",
+			"name" : "Node.js",
+			"vendor": "Oracle",
+			"type" : "development",
+			"category" : "nodejs",
+			"tags" : "nodejs,web,javascript",
+			
+			"importance" : 0,
+			"status" : "ok-or-ignore",
+			"brief" : "to develop front and backend, fast!",
+			"url" : "http.//nodejs.io",
+			"check" : "node -v",
+			"install" : "http.//nodejs.io/install",
+			"instructions" : "Download and double click",
+			"serial" : "",
+			"email" : "",
+			"username" : "",
+			"password" : "",
+			"required" : [""],
+			
+			"os" : [
+				{
+					"id" : "macosx",
+					"versions" : [
+						{
+							"id": "1.1",
+							"name": "1.1",
+							"brief" : "cool!",
+							"release" : "04.08.2014",
+							"update" : "2015.08.04 05:47:50",
+							"size" : 20,
+							"size-unit" : "Mo",
+							"url" : "",
+							"serial" : "",
+							"install" : "",
+							"instructions" : "",
+							"status" : "ok-or-ignore"
+						}
+					]
+				}
+			],
+			
+			"plugins" : [
+			]
+		}
+		
+		,{
+			"id" : "dropbox",
+			"name" : "Dropbox",
+			"vendor": "Dropbox",
+			"type" : "configuration",
+			"category" : "cloud",
+			"tags" : "dropbox",
+			
+			"importance" : 0,
+			"status" : "ok-or-ignore",
+			"brief" : "to synchronize, easily!",
+			"url" : "http.//dropbox.com",
+			"check" : "",
+			"install" : "http.//dropbox.com/install",
+			"instructions" : "Download and double click",
+			"serial" : "",
+			"email" : "",
+			"username" : "jacques@2ia.net",
+			"password" : "",
+			"required" : [""],
+			
+			"os" : [
+				{
+					"id" : "macosx",
+					"versions" : [
+						{
+							"id": "1.1",
+							"name": "1.1",
+							"brief" : "cool!",
+							"release" : "04.08.2014",
+							"update" : "2015.08.04 05:47:50",
+							"size" : 20,
+							"size-unit" : "Mo",
+							"url" : "",
+							"serial" : "",
+							"install" : "",
+							"instructions" : "",
+							"status" : "ok-or-ignore"
+						}
+					]
+				}
+			]
+		}
+		
+		
+		,{
+			"id" : "FinderCopyPath", "name" : "Finder Copy Path", "type" : "configuration", "category" : "environment",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "http://www.macyourself.com/2011/12/31/copy-file-or-folder-path-to-the-clipboard-in-mac-os-x-lion/" } ] } ] 
+		}
+		,{
+			"id" : "Pocket", "name" : "Pocket", "type" : "configuration", "category" : "App Store", "username" : "jacquescouvreur", "instructions" : "Load bookmarks",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+
+
+		,{
+			"id" : "MSOffice2011", "name" : "MS Office 2011", "type" : "Installation", "category" : "Office",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "2011", "name": "2011", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "LibreOffice", "name" : "LibreOffice", "type" : "Installation", "category" : "Office", "instructions" : "+ FR language kit",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "4.4.0", "name": "4.4.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "AdobeAir", "name" : "Adobe Air", "type" : "Installation", "category" : "Office",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "AdobeReader", "name" : "Adobe Reader", "type" : "Installation", "category" : "Office",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "AdobeFlashPlayer", "name" : "Adobe Flash Player", "type" : "Installation", "category" : "Office",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "AdobeShockwavePlayer", "name" : "Adobe Shockwave Player", "type" : "Installation", "category" : "Office",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+
+
+		,{
+			"id" : "IntelliJUltimate", "name" : "IntelliJ Ultimate", "type" : "Development", "category" : "JetBrain",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "14.1.4", "name": "14.1.4", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "RubyMine", "name" : "RubyMine", "type" : "Development", "category" : "JetBrain", "instructions" : "Launch it to install JDK !",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "AppCode", "name" : "AppCode", "type" : "Development", "category" : "JetBrain",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+
+
+		,{
+			"id" : "Ant", "name" : "Ant", "type" : "Development", "category" : "Java", "instructions" : "brew install ant", "required" : [],
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "Maven", "name" : "Maven", "type" : "Development", "category" : "Java", "instructions" : "@see .bash_profile", "required" : [ "bashprofile" ],
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "Nexus", "name" : "Nexus", "type" : "Development", "category" : "Java", "instructions" : "@see .bash_profile", "required" : [ "bashprofile" ],
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "Infinitest", "name" : "Infinitest", "type" : "Development", "category" : "Java", "instructions" : "", "url" : "http://infinitest.github.com",
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "Hudson", "name" : "Hudson", "type" : "Development", "category" : "Java", "instructions" : "", "required" : [],
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "1.0", "name": "1.0", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+		,{
+			"id" : "Eclipse", "name" : "Eclipse", "type" : "Development", "category" : "Java", "instructions" : "", "required" : [],
+			"os" : [ { "id" : "macosx", "versions" : [ { "id": "4.0-luna", "name": "4.0 Luna", "update" : "2015.08.04 05:47:50", "install" : "" } ] } ] 
+		}
+
+	]
+}

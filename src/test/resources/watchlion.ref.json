@@ -1,0 +1,145 @@
+{
+	"protocol": "0.0.1",
+	
+	"version": "001",
+	"update" : "2015.08.04 05:47:50",
+	"applications" : [
+		{
+			"id" : "nodejs",
+			"name" : "Node.js",
+			"vendor": "Oracle",
+			"type" : "development",
+			"category" : "nodejs",
+			"tags" : "nodejs,web,javascript",
+			
+			"importance" : 0,
+			"status" : "ok-or-ignore",
+			"brief" : "to develop front and backend, fast!",
+			"url" : "http.//nodejs.io",
+			"check" : "node -v",
+			"install" : "http.//nodejs.io/install",
+			"instructions" : "Download and double click",
+			"serial" : "",
+			"email" : "",
+			"username" : "",
+			"password" : "",
+			"required" : [""],
+			
+			"os" : [
+				{
+					"id" : "macosx",
+					"versions" : [
+						{
+							"id": "1.1",
+							"name": "1.1",
+							"brief" : "cool!",
+							"release" : "04.08.2014",
+							"update" : "2015.08.04 05:47:50",
+							"size" : 20,
+							"size-unit" : "Mo",
+							"url" : "",
+							"serial" : "",
+							"install" : "",
+							"instructions" : "",
+							"status" : "ok-or-ignore"
+						}
+					]
+				}
+			],
+			
+			"plugins" : [
+			]
+		}
+		
+		,{
+			"id" : "dropbox",
+			"name" : "Dropbox",
+			"vendor": "Dropbox",
+			"type" : "configuration",
+			"category" : "cloud",
+			"tags" : "dropbox",
+			
+			"importance" : 0,
+			"status" : "ok-or-ignore",
+			"brief" : "to synchronize, easily!",
+			"url" : "http.//dropbox.com",
+			"check" : "",
+			"install" : "http.//dropbox.com/install",
+			"instructions" : "Download and double click",
+			"serial" : "",
+			"email" : "",
+			"username" : "jacques@2ia.net",
+			"password" : "",
+			"required" : [""],
+			
+			"os" : [
+				{
+					"id" : "macosx",
+					"versions" : [
+						{
+							"id": "1.1",
+							"name": "1.1",
+							"brief" : "cool!",
+							"release" : "04.08.2014",
+							"update" : "2015.08.04 05:47:50",
+							"size" : 20,
+							"size-unit" : "Mo",
+							"url" : "",
+							"serial" : "",
+							"install" : "",
+							"instructions" : "",
+							"status" : "ok-or-ignore"
+						}
+					]
+				}
+			]
+		}
+		
+		
+		,{
+			"id" : "mybashprofile",
+			"name" : "my .bash_profile",
+			"vendor": "Me",
+			"type" : "configuration",
+			"category" : "environment",
+			"tags" : "dropbox,bash",
+			
+			"importance" : 0,
+			"status" : "ok-or-ignore",
+			"brief" : "my common commands",
+			"url" : "",
+			"check" : "sos",
+			"install" : "",
+			"instructions" : "",
+			"serial" : "",
+			"email" : "",
+			"username" : "",
+			"password" : "",
+			"required" : [ "dropbox" ],
+			
+			"os" : [
+				{
+					"id" : "macosx",
+					"versions" : [
+						{
+							"id": "snapshot",
+							"name": "snapshot",
+							"brief" : "",
+							"release" : "04.08.2014",
+							"update" : "2015.08.04 05:47:50",
+							"size" : 20,
+							"size-unit" : "ko",
+							"url" : "",
+							"serial" : "",
+							"install" : "/Dropbox/-environment/scripts/install-bash_profile.sh",
+							"instructions" : "Clic!",
+							"status" : "ok-or-ignore"
+						}
+					]
+				}
+			]
+		}
+
+
+	]
+}
