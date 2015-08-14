@@ -14,7 +14,10 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.apache.commons.lang.StringUtils;
+
 import ch.inagua.watchlion.model.Application;
+import ch.inagua.watchlion.model.LightApplication;
 import ch.inagua.watchlion.model.Watchlion;
 
 /**
@@ -57,6 +60,9 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 		if (node.getUserObject() != null && node.getUserObject() instanceof Application) {
 			app = (Application) node.getUserObject();
 			label = app.getLabelWithLastVersion() + " [" + getUpdatedDate(app) + "]";
+		} else if (node.getUserObject() != null && node.getUserObject() instanceof LightApplication) {
+			LightApplication la = (LightApplication) node.getUserObject();
+			label = la.getName() + (StringUtils.isBlank(la.getVersion()) ? "" : " [" + la.getVersion() + "]");
 		} else {
 			label = "" + node;
 		}

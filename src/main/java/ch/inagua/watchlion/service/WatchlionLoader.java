@@ -245,9 +245,9 @@ public class WatchlionLoader {
 
 	private String loadFileContent(String jsonFilePath) throws IOException {
 		String path = jsonFilePath;
-		if ("/".equals(jsonFilePath.substring(0, 1))) {
-			path = jsonFilePath.substring(1);
-		}
+//		if ("/".equals(jsonFilePath.substring(0, 1))) {
+//			path = jsonFilePath.substring(1);
+//		}
 
 		File file = new File(path);
 		if (!file.exists() || file.isDirectory()) {
@@ -259,9 +259,9 @@ public class WatchlionLoader {
 
 	private void saveIntoFile(String jsonFilePath, JSONObject jsonobject) throws IOException {
 		String path = jsonFilePath;
-		if ("/".equals(jsonFilePath.substring(0, 1))) {
-			path = jsonFilePath.substring(1);
-		}
+//		if ("/".equals(jsonFilePath.substring(0, 1))) {
+//			path = jsonFilePath.substring(1);
+//		}
 
 		File file = new File(path);
 		if (!file.exists() || file.isDirectory()) {

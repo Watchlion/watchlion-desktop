@@ -13,14 +13,18 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -39,17 +43,26 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang.StringUtils;
 
 import ch.inagua.watchlion.model.Application;
 import ch.inagua.watchlion.model.Environment;
+import ch.inagua.watchlion.model.LightApplication;
 import ch.inagua.watchlion.model.Watchlion;
 import ch.inagua.watchlion.service.WatchlionLoader;
+import ch.inagua.watchlion.service.os.osx.OsxInfoPlistReader;
 import ch.inagua.watchlion.service.os.windows.WindowsPsInfoReader;
 
 /**
  */
 public class Panel extends JPanel /* implements ActionListener */{
+	
+	private enum Mode {
+		
+		Installed, Missing, All, Explore;
+		
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -80,45 +93,75 @@ public class Panel extends JPanel /* implements ActionListener */{
 	private JCheckBox versionInstalledCheckBox;
 	private JCheckBox versionIgnoredCheckBox;
 	
+	private JButton buttonAppsInstalled;
+	private JButton buttonAppsMissing;
+	private JButton buttonAppsAll;
+	private JButton buttonAppsExplore;
+
 	private JButton buttonInstalled;
 	private JButton buttonIgnored;
 	private JButton buttonUpdateApp;
+	private JButton buttonAddDirectory;
 
 	private JTree tree;
 
-	private boolean isLocal = true;
+	// private boolean isLocal = true;
 
+	private Mode mode = Mode.Installed;
 
 	private JButton buttonUpdateVersion;
 
-
 	private JButton buttonCreateVersion;
-
 
 	private JTextArea infoTextArea;
 
-	private List<String> windowsApp;
+	//private List<String> windowsApp;
+
+	private final Map<String, List<LightApplication>> appDirectories;
+
+	private JButton buttonRemoveItem;
 
 
 	
 	// TODO PROPERTY 9
 	private TreeNode getRootNode() {
-		final List<Application> flattenApps = isLocal ? watchlion.delta() : watchlion.getReference().getApplications();
-		Map<String, List<Application>> appsByCategory = watchlion.getApplicationsByCategory(flattenApps);
-		final String title = isLocal ? "[Local] Missing Versions" : "[Repository] All applications";
+		
+		if (mode == Mode.Explore) {
+			DefaultMutableTreeNode root = new DefaultMutableTreeNode("Apps installed on your computer");
+			{
+				// https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html
+				DefaultMutableTreeNode osNode = new DefaultMutableTreeNode(System.getProperty("os.name") + " [" + System.getProperty("os.version") + " - " + System.getProperty("os.arch") + "]");
+				root.add(osNode);
+			}
+//			{
+//				DefaultMutableTreeNode windowsNode = new DefaultMutableTreeNode("Apps under Windows (" + windowsApp.size() + ")");
+//				root.add(windowsNode);
+//				for (String winAppName : windowsApp) {
+//					windowsNode.add(new DefaultMutableTreeNode(winAppName));
+//				}
+//			}
+			{
+				for (Entry<String, List<LightApplication>> entry : appDirectories.entrySet()) {
+					List<LightApplication> subDirectories = entry.getValue();
+					DefaultMutableTreeNode directoryNode = new DefaultMutableTreeNode(entry.getKey() + " (" + subDirectories.size() + ")");
+					root.add(directoryNode);
+					for (LightApplication subDirectoryName : subDirectories) {
+						DefaultMutableTreeNode node = new DefaultMutableTreeNode(subDirectoryName.getName() + " \n" + subDirectoryName.getVersion());
+						node.setUserObject(subDirectoryName);
+						directoryNode.add(node);
+					}
+				}
+			}
+			return root;
+		}
 
-		Environment env = isLocal ? watchlion.getLocal() : watchlion.getReference();
+		final List<Application> flattenApps = mode == Mode.Installed ? watchlion.delta() : watchlion.getReference().getApplications();
+		Map<String, List<Application>> appsByCategory = watchlion.getApplicationsByCategory(flattenApps);
+		final String title = mode == Mode.Installed ? "[Local] Missing Versions" : "[Repository] All applications";
+
+		Environment env = mode == Mode.Installed ? watchlion.getLocal() : watchlion.getReference();
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(title + " (" + flattenApps.size() + ")" + " [" + DATE_FORMAT.format(env.getUpdateDate()) + "]");
-		
-		if (!windowsApp.isEmpty()) {
-			DefaultMutableTreeNode winNode = new DefaultMutableTreeNode("Installed App under Windows (" + windowsApp.size() + ")");
-			root.add(winNode);
-			for (String winAppName : windowsApp) {
-				winNode.add(new DefaultMutableTreeNode(winAppName));
-			}
-		}
-		
 		for (String category : appsByCategory.keySet()) {
 			final List<Application> apps = appsByCategory.get(category);
 			
@@ -135,7 +178,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 				addNodeIfNotBlank(appNode, "Username: ", application.getUsername());
 				addNodeIfNotBlank(appNode, "Serial: ", application.getSerial());
 
-				if (isLocal) {
+				if (mode == Mode.Installed) {
 					Application.Version version = application.getLastVersion();
 					if (version != null && StringUtils.isNotBlank(version.getInstructions()) || StringUtils.isNotBlank(version.getInstall())) {
 						DefaultMutableTreeNode versionsNode = new DefaultMutableTreeNode("Last Version: " + version.getName() + " [" + version.getId() + "]");
@@ -199,7 +242,9 @@ public class Panel extends JPanel /* implements ActionListener */{
 		super(new GridLayout(2, 0));
 		this.watchlion = watchlion;
 
-		windowsApp = getWindowsInstalledApplications();
+		appDirectories = new HashMap<String, List<LightApplication>>();
+		loadMacOsxApplications();
+		loadWindowsInstalledApplications();
 		
 		JPanel topPanel = new JPanel(new GridLayout(0, 2));
 		add(topPanel);
@@ -207,6 +252,57 @@ public class Panel extends JPanel /* implements ActionListener */{
 		JPanel listPanel = new JPanel(new BorderLayout());
 		topPanel.add(listPanel);
 		{
+			{
+				JPanel topButtonsPanel = new JPanel(new FlowLayout());
+				listPanel.add(topButtonsPanel, BorderLayout.PAGE_START);
+
+				{
+					buttonAppsInstalled = new JButton("Installed");
+					topButtonsPanel.add(buttonAppsInstalled);
+					buttonAppsInstalled.setToolTipText("Display Installed Applications");
+					buttonAppsInstalled.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							mode = Mode.Installed;
+							reloadData();
+							enableAppsButtonsBut(buttonAppsInstalled);
+							buttonInstalled.setEnabled(false);
+						}
+					});
+				}
+				{
+					buttonAppsMissing = new JButton("(Missing)");
+					topButtonsPanel.add(buttonAppsMissing);
+					buttonAppsMissing.setToolTipText("Display Missing Applications");
+					addNotNetImplementedAlert(buttonAppsMissing);
+					// mode = Mode.Missing;
+				}
+				{
+					buttonAppsAll = new JButton("All");
+					topButtonsPanel.add(buttonAppsAll);
+					buttonAppsAll.setToolTipText("Display All Applications");
+					buttonAppsAll.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							mode = Mode.All;
+							reloadData();
+							enableAppsButtonsBut(buttonAppsAll);
+							buttonInstalled.setEnabled(false);
+						}
+					});
+				}
+				{
+					buttonAppsExplore = new JButton("Explore");
+					topButtonsPanel.add(buttonAppsExplore);
+					buttonAppsExplore.setToolTipText("Display Applications found on your computer");
+					buttonAppsExplore.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							mode = Mode.Explore;
+							reloadData();
+							enableAppsButtonsBut(buttonAppsExplore);
+							buttonInstalled.setEnabled(false);
+						}
+					});
+				}
+			}
 			{
 				tree = new JTree(new DefaultMutableTreeNode("LABEL_GENERATE"));
 				tree.setToolTipText("Selectionner une ligne et CTRL+C pour copier son contenu.");
@@ -232,17 +328,17 @@ public class Panel extends JPanel /* implements ActionListener */{
 				JPanel buttonsPanel = new JPanel(new FlowLayout());
 				listPanel.add(buttonsPanel, BorderLayout.PAGE_END);
 
-				final JButton buttonReference = new JButton("Repository");
-				buttonsPanel.add(buttonReference);
-				buttonReference.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						toggleIsLocal();
-						buttonReference.setText(isLocal ? "Repository" : "Local");
-						buttonInstalled.setEnabled(false);
-					}
-				});
+//				final JButton buttonReference = new JButton("Repository");
+//				buttonsPanel.add(buttonReference);
+//				buttonReference.addActionListener(new ActionListener() {
+//					public void actionPerformed(ActionEvent e) {
+//						toggleIsLocal();
+//						buttonReference.setText(isLocal ? "Repository" : "Local");
+//						buttonInstalled.setEnabled(false);
+//					}
+//				});
 
-				buttonInstalled = new JButton("Installed");
+				buttonInstalled = new JButton("Install");
 				buttonsPanel.add(buttonInstalled);
 				// buttonInstalled.setEnabled(false);
 				buttonInstalled.addActionListener(new ActionListener() {
@@ -256,7 +352,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 					}
 				});
 
-				buttonIgnored = new JButton("Ignored");
+				buttonIgnored = new JButton("Ignore");
 				buttonsPanel.add(buttonIgnored);
 				// buttonIgnored.setEnabled(false);
 				buttonIgnored.addActionListener(new ActionListener() {
@@ -266,6 +362,44 @@ public class Panel extends JPanel /* implements ActionListener */{
 							watchlion.ignoreLastVersionForApplication(selectedApplication, true);
 							reloadDataLater();
 							JOptionPane.showMessageDialog(Panel.this, selectedApplication.getLabelWithLastVersion() + " ignored. Need to save!", "INFORMATION", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+				});
+
+				buttonAddDirectory = new JButton("Add Directory");
+				buttonsPanel.add(buttonAddDirectory);
+				buttonAddDirectory.setToolTipText("Add a directory to explore");
+				// buttonIgnored.setEnabled(false);
+				// http://stackoverflow.com/questions/13334198/java-custom-buttons-in-showinputdialog
+				buttonAddDirectory.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String path = (String)JOptionPane.showInputDialog(
+			                    Panel.this,
+			                    "Get path of the directory:",
+			                    "Add Directory to explore",
+			                    JOptionPane.PLAIN_MESSAGE,
+			                    null,
+			                    null,
+			                    "");
+
+						addDirectoryToExplore(path);
+					}
+				});
+
+				buttonRemoveItem = new JButton("Remove Item");
+				buttonsPanel.add(buttonRemoveItem);
+				buttonRemoveItem.setToolTipText("Remove selected item in the tree (Installed App)");
+				// buttonIgnored.setEnabled(false);
+				// http://stackoverflow.com/questions/13334198/java-custom-buttons-in-showinputdialog
+				buttonRemoveItem.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+						Object userObject = selectedNode.getUserObject();
+						if (userObject instanceof LightApplication) {
+							for (Entry<String, List<LightApplication>> entry : appDirectories.entrySet()) {
+								entry.getValue().remove(userObject);
+								reloadData();
+							}
 						}
 					}
 				});
@@ -444,11 +578,78 @@ public class Panel extends JPanel /* implements ActionListener */{
 			}
 		}
 
+		setupInitialDisplay();
+	}
+
+	private void loadMacOsxApplications() {
+		String path = "/Applications";
+		File directory = new File(path);
+		if (directory.exists()) {
+			List<File> files = new ArrayList<File>(Arrays.asList(directory.listFiles()));
+			List<LightApplication> subdirectoriesNames = new ArrayList<LightApplication>();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					String plistPath = file.getPath() + "/Contents/Info.plist";
+					String version = "";
+					try {
+						OsxInfoPlistReader reader = new OsxInfoPlistReader(plistPath);
+						version = reader.getBundleShortVersionString();
+					} catch (ConfigurationException e) {
+					}
+					String name = file.getName();
+					name = name.replace(".app", "");
+					subdirectoriesNames.add(new LightApplication(name, version));
+				}
+			}
+			if (!subdirectoriesNames.isEmpty()) {
+				appDirectories.put("Mac OS X /Applications", subdirectoriesNames);
+			}
+		} else {
+			System.err.println("No content found for the directory: " + path);
+		}
+	}
+
+	private void setupInitialDisplay() {
+		enableAppsButtonsBut(buttonAppsInstalled);
 		applicationSelected(null);
 	}
 
-	private List<String> getWindowsInstalledApplications() {
-		List<String> apps = new ArrayList<String>();
+	protected void addDirectoryToExplore(String path) {
+		if (path != null) {
+			File directory = new File(path);
+			if (directory.exists()) {
+				List<File> files = new ArrayList<File>(Arrays.asList(directory.listFiles()));
+				List<LightApplication> subdirectoriesNames = new ArrayList<LightApplication>();
+				for (File file : files) {
+					if (file.isDirectory()) {
+						subdirectoriesNames.add(new LightApplication(file.getName()));
+					}
+				}
+				if (!subdirectoriesNames.isEmpty()) {
+					appDirectories.put(path, subdirectoriesNames);
+				}
+			} else {
+				System.err.println("No content found for the directory: " + path);
+			}
+			reloadData();
+		}
+	}
+
+	protected void enableAppsButtonsBut(JButton button) {
+		buttonAppsInstalled.setEnabled(true);
+		buttonAppsMissing.setEnabled(true);
+		buttonAppsAll.setEnabled(true);
+		buttonAppsExplore.setEnabled(true);
+		button.setEnabled(false);
+		
+		boolean explore = button == buttonAppsExplore;
+		buttonAddDirectory.setVisible(explore);
+		buttonInstalled.setVisible(!explore);
+		buttonIgnored.setVisible(!explore);
+	}
+
+	private void loadWindowsInstalledApplications() {
+		List<LightApplication> apps = new ArrayList<LightApplication>();
 		try {
 			Process p = Runtime.getRuntime().exec("scripts/psinfo -s");
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -457,11 +658,16 @@ public class Panel extends JPanel /* implements ActionListener */{
 			while ((s = stdInput.readLine()) != null) {
 				content += s + "\n";
 			}
-			apps = new WindowsPsInfoReader().parse(content);
+			List<String> appNames = new WindowsPsInfoReader().parse(content);
+			for (String appName : appNames) {
+				apps.add(new LightApplication(appName));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return apps;
+		if (!apps.isEmpty()) {
+			appDirectories.put("Windows Program Files", apps);
+		}
 	}
 
 	private void addCopyClipboardListener(final JButton button, final JTextField textField) {
@@ -523,11 +729,6 @@ public class Panel extends JPanel /* implements ActionListener */{
 		});
 	}
 	
-	protected void toggleIsLocal() {
-		isLocal = !isLocal;
-		reloadData();
-	}
-
 	@SuppressWarnings("unused")
 	private void addNotNetImplementedAlert(JButton buttonReference) {
 		buttonReference.addActionListener(new ActionListener() {
@@ -605,6 +806,8 @@ public class Panel extends JPanel /* implements ActionListener */{
 		versionInstallTextField.setText(version == null ? "" : version.getInstall());
 		
 		versionInstalledCheckBox.setSelected(watchlion.isLastVersionInstalled(app));
+		
+		boolean isLocal = (mode == Mode.Installed);
 		versionIgnoredCheckBox.setSelected(!isLocal && app != null && watchlion.isApplicationIgnored(app.getId()));
 	}
 	
@@ -661,7 +864,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 	private void updateVersion() {
 		Application selectedApplication = getSelectedReferenceApplication();
 		if (selectedApplication != null) {
-			Application.Version version = isLocal //
+			Application.Version version = (mode == Mode.Installed) //
 					? watchlion.getLocal().getApplicationForId(selectedApplication.getId()).getLastVersion() // 
 					: watchlion.getReference().getApplicationForId(selectedApplication.getId()).getLastVersion();
 			updateVersion(version);
@@ -688,7 +891,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 	}
 
 	private void updateVersion(Application.Version version) {
-		if (!isLocal) {
+		if (mode != Mode.Installed) {
 			version.setId(versionIdTextField.getText());
 			version.setName(versionNameTextField.getText());
 			version.setInstructions(versionInstructionsTextField.getText());
@@ -715,6 +918,9 @@ public class Panel extends JPanel /* implements ActionListener */{
 	}
 
 	private void applicationSelected(Application application) {
+		
+		boolean isLocal = (mode == Mode.Installed);
+		
 		buttonInstalled.setEnabled(false);
 		buttonIgnored.setEnabled(false);
 		
