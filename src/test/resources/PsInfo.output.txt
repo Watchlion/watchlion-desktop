@@ -1,0 +1,280 @@
+Here is the standard output of the command:
+
+System information for \\GM63068:
+Uptime:                    2 days 3 hours 7 minutes 6 seconds
+Kernel version:            Windows 7 Enterprise, Multiprocessor Free
+Product type:              Professional
+Product version:           6.1
+Service pack:              0
+Kernel build number:       7601
+Registered organization:   Groupe Mutuel Assurances
+Registered owner:          Service informatique
+IE version:                9.0000
+System root:               C:\Windows
+Processors:                8
+Processor speed:           3.3 GHz
+Processor type:            Intel(R) Core(TM) i7-2600 CPU @
+Physical memory:           3350 MB
+Video driver:              AMD Radeon HD 6500 Series
+Applications:
+Adobe Flash Player 11 Plugin 11.3.300.270
+Adobe Flash Player 17 ActiveX 17.0.0.169
+Adobe Reader X (10.1.3) MUI 10.1.3
+CA APM Introscope Workstation 9.5.0.0 9.5.0.0
+CA APM Introscope Workstation 9.7.1.16 9.7.1.16
+CSVed 2.3.2 2.3.2
+Definition Update for Microsoft Office 2010 (KB982726) 32-Bit Edition
+Exodus Jabber Client (remove only)
+Fiddler 4.5.1.0
+Git version 1.9.5-preview20150319 1.9.5-preview20150319
+Google Chrome Groupe Mutuel 66.77.16516
+Google Update Helper 1.3.25.11
+Google Update Helper 1.3.26.9
+IBM AFP Viewer Plug-In
+IBM Installation Manager
+IBM Software Delivery Platform
+IBM Support Assistant Workbench v4.1 4.1.0
+IBM WebSphere Application Server, V5.1
+IBM WebSphere ILOG JRules V7.0.1 7.0.0.0
+IBM WebSphere Portal for Multiplatforms 5.1.0.1
+IBM iSeries Access for Windows
+IntelliJ IDEA 14.1.2 141.713.2
+IntelliJ IDEA 14.1.3 141.1010.3
+IntelliJ IDEA Community Edition 14.1.1 141.178.9
+J2SE Development Kit 5.0 Update 22 1.5.0.220
+J2SE Runtime Environment 5.0 Update 22 1.5.0.220
+Java 8 Update 20 8.0.200
+Java Auto Updater 2.8.20.26
+JetBrains WebStorm 8.0.4 135.1063
+K-Lite Codec Pack 2.75 Full 2.75
+Lotus Notes 8.5.3 (Basic) 8.53.11258
+Lotus Notes 8.5.3 MUI Pack (Basic) for G1 8.53.11288
+MSXML 4.0 SP3 Parser (KB2721691) 4.30.2114.0
+MSXML 4.0 SP3 Parser (KB2758694) 4.30.2117.0
+MSXML 4.0 SP3 Parser (KB973685) 4.30.2107.0
+MarkdownPad 2 2.4.4.40074
+MarkdownPad 2 2.4.4.40074
+Microsoft .NET Framework 1.1 1.1.4322
+Microsoft .NET Framework 1.1
+Microsoft .NET Framework 1.1 Hotfix (KB886903)
+Microsoft Office Access MUI (French) 2010 14.0.7015.1000
+Microsoft Office Excel MUI (French) 2010 14.0.7015.1000
+Microsoft Office Groove MUI (French) 2010 14.0.7015.1000
+Microsoft Office InfoPath MUI (French) 2010 14.0.7015.1000
+Microsoft Office OneNote MUI (French) 2010 14.0.7015.1000
+Microsoft Office Outlook MUI (French) 2010 14.0.7015.1000
+Microsoft Office PowerPoint MUI (French) 2010 14.0.7015.1000
+Microsoft Office Professional Plus 2010 14.0.7015.1000
+Microsoft Office Professionnel Plus 2010 14.0.7015.1000
+Microsoft Office Proof (Arabic) 2010 14.0.7015.1000
+Microsoft Office Proof (Dutch) 2010 14.0.7015.1000
+Microsoft Office Proof (English) 2010 14.0.7015.1000
+Microsoft Office Proof (French) 2010 14.0.7015.1000
+Microsoft Office Proof (German) 2010 14.0.7015.1000
+Microsoft Office Proof (Spanish) 2010 14.0.7015.1000
+Microsoft Office Proofing (English) 2010 14.0.7015.1000
+Microsoft Office Proofing (French) 2010 14.0.7015.1000
+Microsoft Office Publisher MUI (French) 2010 14.0.7015.1000
+Microsoft Office Shared MUI (English) 2010 14.0.7015.1000
+Microsoft Office Shared MUI (French) 2010 14.0.7015.1000
+Microsoft Office Shared Setup Metadata MUI (English) 2010 14.0.7015.1000
+Microsoft Office Visio 2010 14.0.7015.1000
+Microsoft Office Visio MUI (English) 2010 14.0.7015.1000
+Microsoft Office Word MUI (French) 2010 14.0.7015.1000
+Microsoft Visio Professionnel 2010 14.0.7015.1000
+Microsoft Visio Viewer 2010 14.0.7015.1000
+Microsoft Visual C++ 2005 ATL Update kb973923 - x86 8.0.50727.4053 8.0.50727.4053
+Microsoft Visual C++ 2005 Redistributable 8.0.61001
+Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 9.0.21022
+Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729.6161 9.0.30729.6161
+Microsoft Visual C++ 2010  x86 Redistributable - 10.0.40219 10.0.40219
+Microsoft Visual C++ 2012 Redistributable (x64) - 11.0.60610 11.0.60610.1
+Microsoft Visual C++ 2012 Redistributable (x86) - 11.0.60610 11.0.60610.1
+Microsoft Visual C++ 2012 x86 Additional Runtime - 11.0.60610 11.0.60610
+Microsoft Visual C++ 2012 x86 Minimum Runtime - 11.0.60610 11.0.60610
+Mozilla Firefox 14.0.1 (x86 fr) 14.0.1
+Nexthink Updater 5.2.00066
+Notepad++ 6.1.1
+NovaRCP 3.2.0.0
+Opera Stable 23.0.1522.77 23.0.1522.77
+Oracle Data Provider for .NET Help 10.2.000
+PatchBeam 1.10
+PowerArchiver 2012 13.00.26
+PowerArchiver 2012 13.00.26
+PuTTY version 0.62 0.62
+QCExplorer
+QuickTime Alternative 1.81 1.81
+RapidSVN-0.12.1
+Rational Application Developper version 9.1 9.1
+Real Alternative 1.52 1.52
+SMS Advanced Client 2.50.4253.3108
+Security Update for Microsoft Excel 2010 (KB3054981) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2687423) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2687423) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2760781) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2810073) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2810073) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2850016) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2850016) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2863817) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2863817) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2880971) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2880971) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2881071) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2881071) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2920748) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB2956076) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB3054834) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB3054834) 32-Bit Edition
+Security Update for Microsoft Office 2010 (KB3054848) 32-Bit Edition
+Security Update for Microsoft PowerPoint 2010 (KB2920812) 32-Bit Edition
+Security Update for Microsoft PowerPoint 2010 (KB3054963) 32-Bit Edition
+Security Update for Microsoft Word 2010 (KB2553428) 32-Bit Edition
+Security Update for Microsoft Word 2010 (KB2553428) 32-Bit Edition
+Security Update for Microsoft Word 2010 (KB3054973) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Service Pack 2 for Microsoft Office 2010 (KB2687455) 32-Bit Edition
+Snagit 11 11.1.0
+Teleport Pro 1.69
+Trend Micro OfficeScan Agent 11.0.4150
+USBDLM 4.5.1
+Update for Microsoft Access 2010 (KB2965300) 32-Bit Edition
+Update for Microsoft Excel 2010 (KB2956084) 32-Bit Edition
+Update for Microsoft Excel 2010 (KB2956084) 32-Bit Edition
+Update for Microsoft Excel 2010 (KB2956084) 32-Bit Edition
+Update for Microsoft Filter Pack 2.0 (KB2881026) 32-Bit Edition
+Update for Microsoft Filter Pack 2.0 (KB2881026) 32-Bit Edition
+Update for Microsoft Filter Pack 2.0 (KB2881026) 32-Bit Edition
+Update for Microsoft Filter Pack 2.0 (KB2881026) 32-Bit Edition
+Update for Microsoft InfoPath 2010 (KB2817369) 32-Bit Edition
+Update for Microsoft InfoPath 2010 (KB2817396) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553140) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553140) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553140) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553140) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2553347) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589282) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589282) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589298) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589298) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589352) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589352) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589352) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589352) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589375) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589375) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2589386) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2597087) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2597087) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2597089) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2687275) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2760631) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2760631) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2794737) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2794737) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2825635) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2825640) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2883019) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2883019) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2889828) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2889828) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2889828) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2910896) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2910896) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2965296) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2965296) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2965301) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2965301) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2965301) 32-Bit Edition
+Update for Microsoft Office 2010 (KB2965301) 32-Bit Edition
+Update for Microsoft Office 2010 (KB3054873) 32-Bit Edition
+Update for Microsoft Office 2010 (KB3054873) 32-Bit Edition
+Update for Microsoft Office 2010 (KB3054964) 32-Bit Edition
+Update for Microsoft Office 2010 (KB3054964) 32-Bit Edition
+Update for Microsoft Office 2010 (KB3054977) 32-Bit Edition
+Update for Microsoft OneNote 2010 (KB2956075) 32-Bit Edition
+Update for Microsoft OneNote 2010 (KB2965297) 32-Bit Edition
+Update for Microsoft OneNote 2010 (KB2965297) 32-Bit Edition
+Update for Microsoft OneNote 2010 (KB2965297) 32-Bit Edition
+Update for Microsoft Outlook 2010 (KB3054881) 32-Bit Edition
+Update for Microsoft Outlook 2010 (KB3054976) 32-Bit Edition
+Update for Microsoft Outlook Social Connector 2010 (KB2553308) 32-Bit Edition
+Update for Microsoft SharePoint Workspace 2010 (KB2760601) 32-Bit Edition
+Update for Microsoft SharePoint Workspace 2010 (KB2760601) 32-Bit Edition
+Update for Microsoft SharePoint Workspace 2010 (KB2760601) 32-Bit Edition
+Update for Microsoft Visio 2010 (KB2881025) 32-Bit Edition
+Update for Microsoft Visio 2010 (KB2965292) 32-Bit Edition
+Update for Microsoft Visio 2010 (KB2965292) 32-Bit Edition
+Update for Microsoft Visio Viewer 2010 (KB2881021) 32-Bit Edition
+WinHTTrack Website Copier 3.47-27 3.47.27
+WinMerge 2.14.0 2.14.0
+WinSCP 4.3.9 4.3.9
+Xpert Runtime 1.00.0000
+pgAdmin III 1.10 1.10
+Here is the standard error of the command (if any):
+
+
+PsInfo v1.77 - Local and remote system information viewer
+Copyright (C) 2001-2009 Mark Russinovich
+Sysinternals - www.sysinternals.com
+
+Querying information for GM63068...

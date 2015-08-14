@@ -12,10 +12,13 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +45,7 @@ import ch.inagua.watchlion.model.Application;
 import ch.inagua.watchlion.model.Environment;
 import ch.inagua.watchlion.model.Watchlion;
 import ch.inagua.watchlion.service.WatchlionLoader;
+import ch.inagua.watchlion.service.os.windows.WindowsPsInfoReader;
 
 /**
  */
@@ -93,6 +97,8 @@ public class Panel extends JPanel /* implements ActionListener */{
 
 	private JTextArea infoTextArea;
 
+	private List<String> windowsApp;
+
 
 	
 	// TODO PROPERTY 9
@@ -104,6 +110,15 @@ public class Panel extends JPanel /* implements ActionListener */{
 		Environment env = isLocal ? watchlion.getLocal() : watchlion.getReference();
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(title + " (" + flattenApps.size() + ")" + " [" + DATE_FORMAT.format(env.getUpdateDate()) + "]");
+		
+		if (!windowsApp.isEmpty()) {
+			DefaultMutableTreeNode winNode = new DefaultMutableTreeNode("Installed App under Windows (" + windowsApp.size() + ")");
+			root.add(winNode);
+			for (String winAppName : windowsApp) {
+				winNode.add(new DefaultMutableTreeNode(winAppName));
+			}
+		}
+		
 		for (String category : appsByCategory.keySet()) {
 			final List<Application> apps = appsByCategory.get(category);
 			
@@ -184,6 +199,8 @@ public class Panel extends JPanel /* implements ActionListener */{
 		super(new GridLayout(2, 0));
 		this.watchlion = watchlion;
 
+		windowsApp = getWindowsInstalledApplications();
+		
 		JPanel topPanel = new JPanel(new GridLayout(0, 2));
 		add(topPanel);
 
@@ -334,14 +351,21 @@ public class Panel extends JPanel /* implements ActionListener */{
 					versionPanel.add(new JLabel("VERSION:"));
 					versionIdTextField = createTextField(versionPanel, "Id");
 					versionNameTextField = createTextField(versionPanel, "Name");
-					versionInstructionsTextField = createTextField(versionPanel, "Instructions");
+					// versionInstructionsTextField = createTextField(versionPanel, "Instructions");
+					{
+						final JButton button = new JButton("Instructions");
+						versionPanel.add(button);
+						versionInstructionsTextField = new JTextField("");
+						versionPanel.add(versionInstructionsTextField);
+						addExecuteListener(button, versionInstructionsTextField);
+					}
 					//versionInstallTextField = createTextField(versionPanel, "Install");
 					{
 						final JButton button = new JButton("Install");
 						versionPanel.add(button);
 						versionInstallTextField = new JTextField("");
 						versionPanel.add(versionInstallTextField);
-						addOpenURLListener(button, versionInstallTextField);
+						addExecuteListener(button, versionInstallTextField);
 					}
 					versionInstalledCheckBox = createCheckbox(versionPanel, "Installed?");
 					versionIgnoredCheckBox = createCheckbox(versionPanel, "Ignored?");
@@ -423,6 +447,23 @@ public class Panel extends JPanel /* implements ActionListener */{
 		applicationSelected(null);
 	}
 
+	private List<String> getWindowsInstalledApplications() {
+		List<String> apps = new ArrayList<String>();
+		try {
+			Process p = Runtime.getRuntime().exec("scripts/psinfo -s");
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String content = "";
+			String s = null;
+			while ((s = stdInput.readLine()) != null) {
+				content += s + "\n";
+			}
+			apps = new WindowsPsInfoReader().parse(content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return apps;
+	}
+
 	private void addCopyClipboardListener(final JButton button, final JTextField textField) {
 		button.setToolTipText("Clic to copy the content in the clipboard");
 		button.addActionListener(new ActionListener() {
@@ -452,7 +493,36 @@ public class Panel extends JPanel /* implements ActionListener */{
 			}
 		});
 	}
+	
+	private void addExecuteListener(final JButton button, final JTextField textField) {
+		button.setToolTipText("Clic to execute the statement");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Process p = Runtime.getRuntime().exec(textField.getText());
 
+					BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
+					// read the output from the command
+					System.out.println("Here is the standard output of the command:\n");
+					String s = null;
+					while ((s = stdInput.readLine()) != null) {
+						System.out.println(s);
+					}
+
+					// read any errors from the attempted command
+					System.out.println("Here is the standard error of the command (if any):\n");
+					while ((s = stdError.readLine()) != null) {
+						System.out.println(s);
+					}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	protected void toggleIsLocal() {
 		isLocal = !isLocal;
 		reloadData();
@@ -657,7 +727,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 		
 		versionIdTextField.setEnabled(!isLocal);
 		versionNameTextField.setEnabled(!isLocal);
-		versionInstructionsTextField.setEnabled(!isLocal);
+		// versionInstructionsTextField.setEnabled(!isLocal);
 		// versionInstallTextField.setEnabled(!isLocal);
 		
 		if (application != null) {

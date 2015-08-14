@@ -18,7 +18,7 @@ public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public Frame(Watchlion watchlion) {
-		setTitle("Watchlion {Â°wÂ°}" + getAppVersion());
+		setTitle("Watchlion {°w°}" + getAppVersion());
 		setSize(1000, 700);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
