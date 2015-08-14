@@ -1,12 +1,23 @@
 package ch.inagua.watchlion.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
 public class Environment {
+	
+	private static final String PROTOCOL = "0.0.1";
 
+	private static final String VERSION = "001";
+
+	public Environment() {
+		setProtocol(PROTOCOL);
+		setVersion(VERSION);
+		setUpdated();
+	}
+	
 	// ------------------------------------------------------------------------
 
 	private String path;
@@ -46,14 +57,18 @@ public class Environment {
 
 	// ------------------------------------------------------------------------
 
-	private String update;
+	private Date updateDate;
 
-	public String getUpdate() {
-		return update;
+	public Date getUpdateDate() {
+		return updateDate;
 	}
 
-	public void setUpdate(String update) {
-		this.update = update;
+	public void setUpdated() {
+		setUpdateDate(new Date());
+	}
+
+	public void setUpdateDate(Date date) {
+		this.updateDate = date;
 	}
 
 	// ------------------------------------------------------------------------
@@ -64,15 +79,16 @@ public class Environment {
 		return applications;
 	}
 
-	public void addApplication(Application application) {
+	public Environment addApplication(Application application) {
 		applications.add(application);
+		return this;
 	}
 
 	public void removeApplication(Application application) {
 		applications.remove(application);
 	}
 
-	Application getApplicationForId(String id) {
+	public Application getApplicationForId(String id) {
 		for (Application app : applications) {
 			if (StringUtils.equals(id, app.getId())) {
 				return app;
@@ -80,7 +96,7 @@ public class Environment {
 		}
 		return null;
 	}
-
+	
 	// ------------------------------------------------------------------------
 
 }

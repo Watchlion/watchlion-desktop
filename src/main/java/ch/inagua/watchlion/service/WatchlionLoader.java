@@ -22,6 +22,8 @@ import ch.inagua.watchlion.model.Watchlion;
 
 public class WatchlionLoader {
 
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+	
 	private static final String KEY_APP_OS = "os";
 	private static final String KEY_APP_ID = "id";
 	private static final String KEY_APP_NAME = "name";
@@ -33,7 +35,9 @@ public class WatchlionLoader {
 	private static final String KEY_APP_INSTALL = "install";
 	private static final String KEY_APP_REQUIRED = "required";
 	private static final String KEY_APP_USERNAME = "username";
+	private static final String KEY_APP_SERIAL = "serial";
 	private static final String KEY_APP_UPDATE = "update";
+	private static final String KEY_APP_IGNORED = "ignored";
 	
 	private static final String KEY_ENV_APPLICATIONS = "applications";
 	private static final String KEY_ENV_UPDATE = "update";
@@ -42,6 +46,7 @@ public class WatchlionLoader {
 	
 	private static final String KEY_OS_ID = "id";
 	private static final String KEY_OS_ID_MACOSX = "macosx";
+	private static final String KEY_OS_PLUGINS = "plugins";
 	private static final String KEY_OS_VERSIONS = "versions";
 
 	private static final String KEY_VERSION_ID = "id";
@@ -50,6 +55,7 @@ public class WatchlionLoader {
 	private static final String KEY_VERSION_INSTRUCTIONS = "instructions";
 	private static final String KEY_VERSION_INSTALL = "install";
 	// private static final String KEY_VERSION_INSTALLED = "installed";
+	private static final String KEY_VERSION_IGNORED = "ignored";
 
 	// TODO PROPERTY 5
 	public Environment loadFromJSONFile(String jsonFilePath) throws IOException, ParseException, java.text.ParseException {
@@ -61,9 +67,15 @@ public class WatchlionLoader {
 
 		Environment environment = new Environment();
 		environment.setPath(jsonFilePath);
-		environment.setProtocol((String) jsonObject.get(KEY_ENV_PROTOCOL));
-		environment.setVersion((String) jsonObject.get(KEY_ENV_VERSION));
-		environment.setUpdate((String) jsonObject.get(KEY_ENV_UPDATE));
+		if (jsonObject.get(KEY_ENV_PROTOCOL) != null) {
+			environment.setProtocol((String) jsonObject.get(KEY_ENV_PROTOCOL));
+		}
+		if (jsonObject.get(KEY_ENV_VERSION) != null) {
+			environment.setVersion((String) jsonObject.get(KEY_ENV_VERSION));
+		}
+		if (jsonObject.get(KEY_ENV_UPDATE) != null) {
+			environment.setUpdateDate(toDate(jsonObject.get(KEY_ENV_UPDATE)));
+		}
 		{
 			JSONArray jsonApplications = (JSONArray) jsonObject.get(KEY_ENV_APPLICATIONS);
 			if (jsonApplications != null) {
@@ -80,7 +92,10 @@ public class WatchlionLoader {
 					app.setInstall((String) jsonApp.get(KEY_APP_INSTALL));
 					// app.setRequired((String) jsonApp.get(KEY_APP_REQUIRED));
 					app.setUsername((String) jsonApp.get(KEY_APP_USERNAME));
-					app.setUpdate((String) jsonApp.get(KEY_APP_UPDATE));
+					app.setSerial((String) jsonApp.get(KEY_APP_SERIAL));
+					app.setUpdateDate(toDate(jsonApp.get(KEY_APP_UPDATE)));
+					Boolean appIgnored = (Boolean) jsonApp.get(KEY_APP_IGNORED);
+					if (appIgnored != null) { app.setIgnored(appIgnored); }
 					environment.addApplication(app);
 
 					JSONArray jsonOss = (JSONArray) jsonApp.get(KEY_APP_OS);
@@ -88,6 +103,7 @@ public class WatchlionLoader {
 						for (int j = 0; j < jsonOss.size(); j++) {
 							JSONObject jsonOs = (JSONObject) jsonOss.get(j);
 							if (KEY_OS_ID_MACOSX.endsWith((String) jsonOs.get(KEY_OS_ID))) {
+
 								JSONArray jsonVersions = (JSONArray) jsonOs.get(KEY_OS_VERSIONS);
 								if (jsonVersions != null) {
 									for (int k = 0; k < jsonVersions.size(); k++) {
@@ -95,14 +111,30 @@ public class WatchlionLoader {
 										Application.Version version = new Application.Version();
 										version.setId((String) jsonVersion.get(KEY_VERSION_ID));
 										version.setName((String) jsonVersion.get(KEY_VERSION_NAME));
-										version.setUpdate((String) jsonVersion.get(KEY_VERSION_UPDATE));
+										version.setUpdateDate(toDate(jsonVersion.get(KEY_VERSION_UPDATE)));
 										version.setInstructions((String) jsonVersion.get(KEY_VERSION_INSTRUCTIONS));
 										version.setInstall((String) jsonVersion.get(KEY_VERSION_INSTALL));
-//										Boolean installed = (Boolean) jsonVersion.get(KEY_VERSION_INSTALLED);
-//										if (installed != null) {
-//											version.setInstalled(installed);
-//										}
+										Boolean ignored = (Boolean) jsonVersion.get(KEY_VERSION_IGNORED);
+										if (ignored != null) { version.setIgnored(ignored); }
 										app.addVersion(version);
+									}
+								}
+
+								JSONArray jsonPlugins = (JSONArray) jsonOs.get(KEY_OS_PLUGINS);
+								if (jsonPlugins != null) {
+									for (int k = 0; k < jsonPlugins.size(); k++) {
+										JSONObject jsonPlugin = (JSONObject) jsonPlugins.get(k);
+										Application.Version plugin = new Application.Version();
+										plugin.setId((String) jsonPlugin.get(KEY_VERSION_ID));
+										plugin.setName((String) jsonPlugin.get(KEY_VERSION_NAME));
+										plugin.setUpdateDate(toDate(jsonPlugin.get(KEY_VERSION_UPDATE)));
+										plugin.setInstructions((String) jsonPlugin.get(KEY_VERSION_INSTRUCTIONS));
+										plugin.setInstall((String) jsonPlugin.get(KEY_VERSION_INSTALL));
+										Boolean ignored = (Boolean) jsonPlugin.get(KEY_VERSION_IGNORED);
+										if (ignored != null) {
+											plugin.setIgnored(ignored);
+										}
+										app.addPlugin(plugin);
 									}
 								}
 							}
@@ -112,6 +144,21 @@ public class WatchlionLoader {
 			}
 		}
 		return environment;
+	}
+
+	static Date toDate(Object object) throws java.text.ParseException {
+		if (object == null) {
+			return null;
+		}
+		String source = (String) object;
+		return DATE_FORMAT.parse(source);
+	}
+
+	static String toString(Date date) {
+		if (date == null) {
+			return null;
+		}
+		return DATE_FORMAT.format(date);
 	}
 
 	public void save(Watchlion watchlion) throws IOException {
@@ -126,7 +173,7 @@ public class WatchlionLoader {
 
 		jsonObject.put(KEY_ENV_PROTOCOL, environment.getProtocol());
 		jsonObject.put(KEY_ENV_VERSION, environment.getVersion());
-		jsonObject.put(KEY_ENV_UPDATE, environment.getUpdate());
+		jsonObject.put(KEY_ENV_UPDATE, toString(environment.getUpdateDate()));
 
 		{
 			JSONArray jsonApplications = new JSONArray();
@@ -146,7 +193,9 @@ public class WatchlionLoader {
 				jsonApp.put(KEY_APP_INSTALL, app.getInstall());
 				// jsonApp.put(KEY_APP_REQUIRED, app.getRequired());
 				jsonApp.put(KEY_APP_USERNAME, app.getUsername());
-				jsonApp.put(KEY_APP_UPDATE, app.getUpdate());
+				jsonApp.put(KEY_APP_SERIAL, app.getSerial());
+				jsonApp.put(KEY_APP_UPDATE, toString(app.getUpdateDate()));
+				jsonApp.put(KEY_APP_IGNORED, app.isIgnored());
 				
 				{
 					JSONArray jsonOss =  new JSONArray();
@@ -160,17 +209,30 @@ public class WatchlionLoader {
 						{
 							JSONArray jsonVersions =  new JSONArray();
 							jsonMacosx.put(KEY_OS_VERSIONS, jsonVersions);
-
 							for (Application.Version version : app.getVersions()) {
 								JSONObject jsonVersion =  new JSONObject();
 								jsonVersions.add(jsonVersion);
 								jsonVersion.put(KEY_VERSION_ID, version.getId());
 								jsonVersion.put(KEY_VERSION_NAME, version.getName());
-								jsonVersion.put(KEY_VERSION_UPDATE, version.getUpdate());
+								jsonVersion.put(KEY_VERSION_UPDATE, toString(version.getUpdateDate()));
 
 								jsonVersion.put(KEY_VERSION_INSTRUCTIONS, version.getInstructions());
 								jsonVersion.put(KEY_VERSION_INSTALL, version.getInstall());
-								// jsonVersion.put(KEY_VERSION_INSTALLED, version.isInstalled());
+								jsonVersion.put(KEY_VERSION_IGNORED, version.isIgnored());
+							}
+
+							JSONArray jsonPlugins =  new JSONArray();
+							jsonMacosx.put(KEY_OS_PLUGINS, jsonPlugins);
+							for (Application.Version plugin : app.getPlugins()) {
+								JSONObject jsonPlugin =  new JSONObject();
+								jsonPlugins.add(jsonPlugin);
+								jsonPlugin.put(KEY_VERSION_ID, plugin.getId());
+								jsonPlugin.put(KEY_VERSION_NAME, plugin.getName());
+								jsonPlugin.put(KEY_VERSION_UPDATE, toString(plugin.getUpdateDate()));
+
+								jsonPlugin.put(KEY_VERSION_INSTRUCTIONS, plugin.getInstructions());
+								jsonPlugin.put(KEY_VERSION_INSTALL, plugin.getInstall());
+								jsonPlugin.put(KEY_VERSION_IGNORED, plugin.isIgnored());
 							}
 						}
 					}
@@ -197,9 +259,9 @@ public class WatchlionLoader {
 
 	private void saveIntoFile(String jsonFilePath, JSONObject jsonobject) throws IOException {
 		String path = jsonFilePath;
-		if ("/".equals(jsonFilePath.substring(0, 1))) {
-			path = jsonFilePath.substring(1);
-		}
+//		if ("/".equals(jsonFilePath.substring(0, 1))) {
+//			path = jsonFilePath.substring(1);
+//		}
 
 		File file = new File(path);
 		if (!file.exists() || file.isDirectory()) {

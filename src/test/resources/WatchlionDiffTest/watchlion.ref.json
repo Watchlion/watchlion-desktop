@@ -48,6 +48,19 @@
 			]
 		}
 		
+		,{
+			"id" : "testflight",
+			"name" : "testflight",
+			"ignored" : true,
+			"os" : [
+				{
+					"id" : "macosx",
+					"versions" : [
+						{ "id": "1.0", "name": "1.0", "release" : "04.08.2014", "update" : "2015.08.04 05:47:50" }
+					]
+				}
+			]
+		}
 		
 		,{
 			"id" : "mybashprofile",

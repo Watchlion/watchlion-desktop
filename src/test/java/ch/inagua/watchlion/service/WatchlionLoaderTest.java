@@ -25,7 +25,7 @@ public class WatchlionLoaderTest {
 
 		assertThat(watchlion.getProtocol(), equalTo("0.0.1"));
 		assertThat(watchlion.getVersion(), equalTo("001"));
-		assertThat(watchlion.getUpdate(), equalTo("2015.08.04 05:47:50"));
+		assertThat(WatchlionLoader.toString(watchlion.getUpdateDate()), equalTo("2015.08.04 05:47:50"));
 
 		List<Application> apps = watchlion.getApplications();
 		assertThat(apps, hasSize(3));
@@ -40,7 +40,7 @@ public class WatchlionLoaderTest {
 				Application.Version version = versions.get(0);
 				assertThat(version.getId(), equalTo("1.1"));
 				assertThat(version.getName(), equalTo("1.1"));
-				assertThat(version.getUpdate(), equalTo("2015.08.04 05:47:50"));
+				assertThat(WatchlionLoader.toString(version.getUpdateDate()), equalTo("2015.08.04 05:47:50"));
 			}
 		}
 		{

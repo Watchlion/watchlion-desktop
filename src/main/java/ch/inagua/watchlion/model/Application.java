@@ -1,15 +1,18 @@
 package ch.inagua.watchlion.model;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 public class Application {
 
 	public static class Version {
+
+		public Version() {
+			setUpdated();
+		}
 
 		// ------------------------------------------------------------------------
 		private String id;
@@ -34,14 +37,18 @@ public class Application {
 		}
 
 		// ------------------------------------------------------------------------
-		private String update;
+		private Date updateDate;
 
-		public String getUpdate() {
-			return update;
+		public Date getUpdateDate() {
+			return updateDate;
 		}
 
-		public void setUpdate(String update) {
-			this.update = update;
+		public void setUpdateDate(Date date) {
+			updateDate = date;
+		}
+
+		public void setUpdated() {
+			setUpdateDate(new Date());
 		}
 
 		// ------------------------------------------------------------------------
@@ -66,27 +73,51 @@ public class Application {
 			this.install = install;
 		}
 
+		// ------------------------------------------------------------------------
+		private boolean ignored;
+
+		public boolean isIgnored() {
+			return ignored;
+		}
+
+		public void setIgnored(boolean ignored) {
+			this.ignored = ignored;
+		}
+
+		// ------------------------------------------------------------------------
+
+		public Version copy() {
+			Version copy = new Version();
+			
+			copy.setId(getId());
+			copy.setName(getName());
+			copy.setUpdateDate(getUpdateDate());
+			copy.setInstructions(getInstructions());
+			copy.setInstall(getInstall());
+			// copy.setIgnored(isIgnored());
+
+			return copy;
+		}
+
+	}
+
+	public Application() {
+		setUpdated();
 	}
 
 	// ------------------------------------------------------------------------
+	private Date updateDate;
 
-	private List<Application> plugins;
-
-	// ------------------------------------------------------------------------
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-
-	private Date lastModication;
-
-	public String getUpdate() {
-		return lastModication == null ? null : DATE_FORMAT.format(lastModication);
+	public Date getUpdateDate() {
+		return updateDate;
 	}
 
-	public void setUpdate(String update) throws ParseException {
-		lastModication = update == null ? null : DATE_FORMAT.parse(update);
+	public void setUpdateDate(Date date) {
+		updateDate = date;
 	}
 
 	public void setUpdated() {
-		lastModication = new Date();
+		setUpdateDate(new Date());
 	}
 	
 	// ------------------------------------------------------------------------
@@ -170,6 +201,17 @@ public class Application {
 	}
 
 	// ------------------------------------------------------------------------
+	private String serial;
+
+	public String getSerial() {
+		return serial;
+	}
+
+	public void setSerial(String serial) {
+		this.serial = serial;
+	}
+
+	// ------------------------------------------------------------------------
 	private String required;
 
 	public String getRequired() {
@@ -203,6 +245,17 @@ public class Application {
 	}
 
 	// ------------------------------------------------------------------------
+	private boolean ignored;
+
+	public boolean isIgnored() {
+		return ignored;
+	}
+
+	public void setIgnored(boolean ignored) {
+		this.ignored = ignored;
+	}
+
+	// ------------------------------------------------------------------------
 
 	private final List<Version> versions = new ArrayList<Version>();
 
@@ -233,12 +286,78 @@ public class Application {
 		return lastVersion.getId();
 	}
 
-	public String getLabelWithLastVersion() {
-		return getName() + " [" + getLastVersion().getName() + "]";
+	public Version getVersionForId(String versionId) {
+		for (Version version : versions) {
+			if (StringUtils.equals(versionId, version.getId())) {
+				return version;
+			}
+		}
+		return null;
 	}
 
-	//	private void setDirty() {
-	//		lastModication = new Date();
-	//	}
+	// ------------------------------------------------------------------------
+
+	private final List<Version> plugins = new ArrayList<Version>();
+
+	public List<Version> getPlugins() {
+		return plugins;
+	}
+
+	public void addPlugin(Version plugin) {
+		plugins.add(plugin);
+	}
+
+	public void removePlugin(Version plugin) {
+		plugins.remove(plugin);
+	}
+
+	public Version getPluginForId(String pluginId) {
+		for (Version plugin : plugins) {
+			if (StringUtils.equals(pluginId, plugin.getId())) {
+				return plugin;
+			}
+		}
+		return null;
+	}
+
+	// ------------------------------------------------------------------------
+
+	public String getLabelWithLastVersion() {
+		String lastVersion = getLastVersion() == null ? "-" : getLastVersion().getName();
+		String prefix = getVersions().size() > 1 ? ">> " : "";
+		return getName() + " [" + prefix + lastVersion + "]";
+	}
+
+	// TODO PROPERTY 8
+	public Application copy() {
+		Application copy = new Application();
+
+		copy.setId(getId());
+		copy.setName(getName());
+		copy.setBrief(getBrief());
+		copy.setURL(getURL());
+		copy.setType(getType());
+		copy.setCategory(getCategory());
+		copy.setUsername(getUsername());
+		copy.setSerial(getSerial());
+		copy.setRequired(getRequired());
+		copy.setInstructions(getInstructions());
+		copy.setInstall(getInstall());
+		copy.setIgnored(isIgnored());
+
+		for (Version plugin : plugins) {
+			copy.addPlugin(plugin.copy());
+		}
+		
+		return copy;
+	}
+
+	public Application copyLocal() {
+		Application copy = new Application();
+		copy.setId(getId());
+		copy.setName(getName());
+		copy.setIgnored(isIgnored());
+		return copy;
+	}
 
 }
