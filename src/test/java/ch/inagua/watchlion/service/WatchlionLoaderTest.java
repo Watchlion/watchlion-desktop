@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.inagua.watchlion.model.Application;
-import ch.inagua.watchlion.model.Watchlion;
+import ch.inagua.watchlion.model.Environment;
 
 public class WatchlionLoaderTest {
 
@@ -21,7 +21,7 @@ public class WatchlionLoaderTest {
 	@Test
 	public void test_loadFromJSONFile() throws Exception {
 		String jsonFile = getClass().getResource("/watchlion.ref.json").getPath();
-		Watchlion watchlion = new WatchlionLoader().loadFromJSONFile(jsonFile);
+		Environment watchlion = new WatchlionLoader().loadFromJSONFile(jsonFile);
 
 		assertThat(watchlion.getProtocol(), equalTo("0.0.1"));
 		assertThat(watchlion.getVersion(), equalTo("001"));

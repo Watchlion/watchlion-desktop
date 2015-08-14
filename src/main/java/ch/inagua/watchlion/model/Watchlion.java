@@ -7,90 +7,73 @@ import org.apache.commons.lang.StringUtils;
 
 public class Watchlion {
 
-	// ------------------------------------------------------------------------
-
-	private String protocol;
-
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
-
-	public String getProtocol() {
-		return protocol;
+	public Watchlion(Environment reference, Environment local) {
+		this.reference = reference;
+		this.local = local;
 	}
 
 	// ------------------------------------------------------------------------
 
-	private String version;
+	private Environment reference;
 
-	public String getVersion() {
-		return version;
+	public Environment getReference() {
+		return reference;
 	}
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	// ------------------------------------------------------------------------
-
-	private String update;
-
-	public String getUpdate() {
-		return update;
-	}
-
-	public void setUpdate(String update) {
-		this.update = update;
+	public void setReference(Environment reference) {
+		this.reference = reference;
 	}
 
 	// ------------------------------------------------------------------------
 
-	private final List<Application> applications = new ArrayList<Application>();
+	private Environment local;
 
-	public List<Application> getApplications() {
-		return applications;
+	public Environment getLocal() {
+		return local;
 	}
 
-	public void addApplication(Application application) {
-		applications.add(application);
-	}
-
-	public void removeApplication(Application application) {
-		applications.remove(application);
+	public void setLocal(Environment local) {
+		this.local = local;
 	}
 
 	// ------------------------------------------------------------------------
 
-	public List<Application> diffWithLocal(Watchlion localWatchlion) {
+	public List<Application> delta() {
 		List<Application> result = new ArrayList<Application>();
-		for (Application refApp : applications) {
-			Application localApp = localWatchlion.getApplicationForId(refApp.getId());
-			if (localApp == null || !StringUtils.equals(refApp.getLastVersionId(), localApp.getLastVersionId())) {
+		for (Application refApp : reference.getApplications()) {
+			Application localApp = local.getApplicationForId(refApp.getId());
+			if (localApp == null 
+				|| !StringUtils.equals(refApp.getLastVersion().getId(), localApp.getLastVersion().getId())
+				// || !localApp.getLastVersion().isInstalled()
+				) {
 				result.add(refApp);
 			}
 		}
 		return result;
 	}
 
-	Application getApplicationForId(String id) {
-		for (Application app : applications) {
-			if (StringUtils.equals(id, app.getId())) {
-				return app;
-			}
-		}
-		return null;
-	}
-
 	public String getReport() {
-		return getReport(applications);
+		return getReport(delta());
 	}
 
-	public String getReport(List<Application> apps) {
+	private String getReport(List<Application> apps) {
 		String result = "Missing versions:\n";
 		for (Application app : apps) {
-			result += " - " + app.getName() + " [" + app.getLastVersionId() + "]\n";
+			result += " - " + app.getLabelWithLastVersion() + "\n";
 		}
 		return result;
+	}
+
+	public void setApplicationInstalled(Application application) {
+		Application localApp = local.getApplicationForId(application.getId());
+		if (localApp == null) {
+			localApp = new Application();
+			localApp.setId(application.getId());
+			localApp.setName(application.getName());
+			local.addApplication(localApp);
+		}
+		localApp.addVersion(application.getLastVersion());
+		localApp.setUpdated();
 	}
 
 }
