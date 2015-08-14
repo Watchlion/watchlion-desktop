@@ -59,22 +59,16 @@ public class WatchlionMain {
 			formatter.printHelp( "Watchlion", options);
 		} else {
 			String refJSON = cmd.getOptionValue(OPTION_REFERENCE);
+			createEmptyJSONIfMissing(refJSON);
+
 			String localJSON = null;
 			if (cmd.hasOption(OPTION_LOCAL)) {
 				localJSON = cmd.getOptionValue(OPTION_LOCAL);
 			} else {
 				String home = System.getProperty("user.home");
-				localJSON = home + "/Watchlion/watchlion.local.json";
-				File f = new File(localJSON);
-				File p = f.getParentFile();
-				if (!p.exists() && !p.mkdirs()) {
-					throw new IllegalStateException("Impossible to create folders " + p);
-				}
-				if (!f.exists()) {
-					FileWriter fileWriter = new FileWriter(localJSON);
-					fileWriter.write("{}");
-					fileWriter.flush();
-					fileWriter.close();
+				{
+					localJSON = home + "/Watchlion/watchlion.local.json";
+					createEmptyJSONIfMissing(localJSON);
 				}
 			}
 
@@ -96,6 +90,21 @@ public class WatchlionMain {
 					}
 				});
 			}
+		}
+	}
+
+	private static void createEmptyJSONIfMissing(String localJSON)
+			throws IOException {
+		File f = new File(localJSON);
+		File p = f.getParentFile();
+		if (!p.exists() && !p.mkdirs()) {
+			throw new IllegalStateException("Impossible to create folders " + p);
+		}
+		if (!f.exists()) {
+			FileWriter fileWriter = new FileWriter(localJSON);
+			fileWriter.write("{}");
+			fileWriter.flush();
+			fileWriter.close();
 		}
 	}
 
