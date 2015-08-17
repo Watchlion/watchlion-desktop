@@ -545,7 +545,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 					versionPanel.add(buttonCreateVersion);
 					buttonCreateVersion.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							createNewVersion();
+							createNewVersionFor(getSelectedReferenceApplication());
 							applicationSelected(null);
 							reloadDataLater();
 							JOptionPane.showMessageDialog(Panel.this, "New Version created. Need to save!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
@@ -556,7 +556,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 					versionPanel.add(buttonUpdateVersion);
 					buttonUpdateVersion.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							updateVersion();
+							updateLastVersionOfSelectedApplication();
 							applicationSelected(null);
 							reloadDataLater();
 							JOptionPane.showMessageDialog(Panel.this, "Version Updated. Need to save!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
@@ -592,8 +592,8 @@ public class Panel extends JPanel /* implements ActionListener */{
 				buttonsPanel.add(buttonCreate);
 				buttonCreate.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						createNewApplication();
-						createNewVersion();
+						Application newApplication = createNewApplication();
+						createNewVersionFor(newApplication);
 						applicationSelected(null);
 						reloadDataLater();
 						JOptionPane.showMessageDialog(Panel.this, "New Application created. Need to save!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
@@ -875,7 +875,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 		}
 	}
 
-	private void createNewApplication() {
+	private Application createNewApplication() {
 		{
 			Application application = new Application();
 			updateApplication(application);
@@ -885,39 +885,38 @@ public class Panel extends JPanel /* implements ActionListener */{
 			Application application = new Application();
 			updateApplication(application);
 			watchlion.getReference().addApplication(application);
+			
+			return application;
 		}
 	}
 
-	private void createNewVersion() {
-		if (StringUtils.isNotEmpty(versionIdTextField.getText())) {
-			Application selectedApplication = getSelectedReferenceApplication();
-			if (selectedApplication != null) {
-				{
-					Application.Version version = new Application.Version();
-					updateVersion(version);
-					Application localApp = watchlion.getLocal().getApplicationForId(selectedApplication.getId());
-					if (localApp == null) {
-						localApp = selectedApplication.copyLocal();
-						watchlion.getLocal().addApplication(localApp);
-					}
-					localApp.addVersion(version);
+	private void createNewVersionFor(Application application) {
+		if (StringUtils.isNotEmpty(versionIdTextField.getText()) && application != null) {
+			{
+				Application.Version version = new Application.Version();
+				watchlion.getReference().getApplicationForId(application.getId()).addVersion(version);
+				updateVersion(version, application);
+			}
+			{
+				Application.Version version = new Application.Version();
+				Application localApp = watchlion.getLocal().getApplicationForId(application.getId());
+				if (localApp == null) {
+					localApp = application.copyLocal();
+					watchlion.getLocal().addApplication(localApp);
 				}
-				{
-					Application.Version version = new Application.Version();
-					updateVersion(version);
-					watchlion.getReference().getApplicationForId(selectedApplication.getId()).addVersion(version);
-				}
+				localApp.addVersion(version);
+				updateVersion(version, application);
 			}
 		}
 	}
 
-	private void updateVersion() {
+	private void updateLastVersionOfSelectedApplication() {
 		Application selectedApplication = getSelectedReferenceApplication();
 		if (selectedApplication != null) {
 			Application.Version version = (mode == Mode.Installed) //
 					? watchlion.getLocal().getApplicationForId(selectedApplication.getId()).getLastVersion() // 
 					: watchlion.getReference().getApplicationForId(selectedApplication.getId()).getLastVersion();
-			updateVersion(version);
+			updateVersion(version, selectedApplication);
 		}
 	}
 
@@ -940,16 +939,16 @@ public class Panel extends JPanel /* implements ActionListener */{
 		application.setIgnored(appIgnoredCheckBox.isSelected());
 	}
 
-	private void updateVersion(Application.Version version) {
+	private void updateVersion(Application.Version version, Application application) {
 		if (mode != Mode.Installed) {
 			version.setId(versionIdTextField.getText());
 			version.setName(versionNameTextField.getText());
 			version.setInstructions(versionInstructionsTextField.getText());
 			version.setInstall(versionInstallTextField.getText());
 			
-			Application selectedApplication = getSelectedReferenceApplication();
-			watchlion.setLastVersionInstalled(selectedApplication, versionInstalledCheckBox.isSelected());
-			watchlion.ignoreLastVersionForApplication(selectedApplication, versionIgnoredCheckBox.isSelected());
+			// Application selectedApplication = getSelectedReferenceApplication();
+			watchlion.setLastVersionInstalled(application, versionInstalledCheckBox.isSelected());
+			watchlion.ignoreLastVersionForApplication(application, versionIgnoredCheckBox.isSelected());
 		}
 		version.setInstall(versionInstallTextField.getText());
 	}
