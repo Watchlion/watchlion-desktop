@@ -130,7 +130,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 			DefaultMutableTreeNode root = new DefaultMutableTreeNode("Apps installed on your computer");
 			{
 				// https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html
-				DefaultMutableTreeNode osNode = new DefaultMutableTreeNode(System.getProperty("os.name") + " [" + System.getProperty("os.version") + " - " + System.getProperty("os.arch") + "]");
+				DefaultMutableTreeNode osNode = new DefaultMutableTreeNode("OS: " + System.getProperty("os.name") + " [" + System.getProperty("os.version") + " - " + System.getProperty("os.arch") + "]");
 				root.add(osNode);
 			}
 //			{
@@ -610,8 +610,21 @@ public class Panel extends JPanel /* implements ActionListener */{
 	}
 
 	private void setupInitialDisplay() {
-		enableAppsButtonsBut(buttonAppsInstalled);
 		applicationSelected(null);
+		if (!watchlion.delta().isEmpty()) {
+			mode = Mode.Installed;
+			enableAppsButtonsBut(buttonAppsInstalled);
+			
+		} else if (!watchlion.getReference().getApplications().isEmpty()) {
+			mode = Mode.All;
+			enableAppsButtonsBut(buttonAppsAll);
+			
+		} else {
+			mode = Mode.Explore;
+			enableAppsButtonsBut(buttonAppsExplore);
+			
+		}
+		reloadData();
 	}
 
 	protected void addDirectoryToExplore(String path) {
@@ -660,7 +673,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 			}
 			List<String> appNames = new WindowsPsInfoReader().parse(content);
 			for (String appName : appNames) {
-				apps.add(new LightApplication(appName));
+				apps.add(new LightApplication(appName, ""));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
