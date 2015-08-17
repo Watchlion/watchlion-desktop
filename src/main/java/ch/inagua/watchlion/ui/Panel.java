@@ -37,6 +37,8 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -238,6 +240,11 @@ public class Panel extends JPanel /* implements ActionListener */{
 		return node != null && node.getUserObject() != null && node.getUserObject() instanceof Application;
 	}
 
+	private boolean isLightApplicationSelection() {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+		return node != null && node.getUserObject() != null && node.getUserObject() instanceof LightApplication;
+	}
+
 	protected Panel(final Watchlion watchlion) {
 		super(new GridLayout(2, 0));
 		this.watchlion = watchlion;
@@ -407,6 +414,36 @@ public class Panel extends JPanel /* implements ActionListener */{
 		}
 
 		infoTextArea = new JTextArea();
+		infoTextArea.getDocument().addDocumentListener(new DocumentListener() {
+			public void removeUpdate(DocumentEvent e) {
+				updateNameAndVersionFields();
+			}
+			public void insertUpdate(DocumentEvent e) {
+				updateNameAndVersionFields();
+			}
+			public void changedUpdate(DocumentEvent e) {
+				updateNameAndVersionFields();
+			}
+			private void updateNameAndVersionFields() {
+				if (mode == Mode.Explore && isLightApplicationSelection()) {
+					String appName = "";
+					String version = "";
+					String[] lines = infoTextArea.getText().split("\n");
+					if (lines.length >= 1) {
+						appName = lines[0];
+						appName = appName.trim();
+						if (lines.length >= 2) {
+							version = lines[1];
+							version = version.trim();
+						}
+					}
+					appIdTextField.setText(appName.replace(" ", "-"));
+					appNameTextField.setText(appName);
+					versionIdTextField.setText(version.replace(" ", "-"));
+					versionNameTextField.setText(version);
+				}
+			}
+		});
 		JScrollPane scroll = new JScrollPane(infoTextArea);
 		topPanel.add(scroll);
 
@@ -673,7 +710,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 			}
 			List<String> appNames = new WindowsPsInfoReader().parse(content);
 			for (String appName : appNames) {
-				apps.add(new LightApplication(appName, ""));
+				apps.add(LightApplication.parse(appName));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
