@@ -651,7 +651,7 @@ public class Panel extends JPanel /* implements ActionListener */{
 	private void loadWindowsInstalledApplications() {
 		List<LightApplication> apps = new ArrayList<LightApplication>();
 		try {
-			Process p = Runtime.getRuntime().exec("scripts/psinfo -s");
+			Process p = Runtime.getRuntime().exec("resources/scripts/psinfo -s");
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String content = "";
 			String s = null;

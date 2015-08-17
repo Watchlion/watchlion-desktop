@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.Before;
@@ -21,6 +22,7 @@ public class WatchlionLoaderTest {
 	@Test
 	public void test_loadFromJSONFile() throws Exception {
 		String jsonFile = getClass().getResource("/watchlion.ref.json").getPath();
+		jsonFile = Paths.get(getClass().getResource("/watchlion.ref.json").toURI()).toString();
 		Environment watchlion = new WatchlionLoader().loadFromJSONFile(jsonFile);
 
 		assertThat(watchlion.getProtocol(), equalTo("0.0.1"));

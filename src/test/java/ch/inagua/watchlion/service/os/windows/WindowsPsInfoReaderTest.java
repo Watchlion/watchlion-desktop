@@ -13,6 +13,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.inagua.watchlion.test.file.FileUtils;
+
 public class WindowsPsInfoReaderTest {
 
 	@Before
@@ -21,7 +23,7 @@ public class WindowsPsInfoReaderTest {
 	
 	@Test
 	public void test_parse() throws Exception {
-		String path = getClass().getResource("/PsInfo.output.txt").getPath();
+		String path = FileUtils.getPathOf("/PsInfo.output.txt");
 		String content = loadFileContent(path);
 		
 		List<String> installedApps = new WindowsPsInfoReader().parse(content);

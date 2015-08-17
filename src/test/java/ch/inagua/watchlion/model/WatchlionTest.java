@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import ch.inagua.watchlion.model.Application;
 import ch.inagua.watchlion.model.Environment;
 import ch.inagua.watchlion.model.Watchlion;
 import ch.inagua.watchlion.service.WatchlionLoader;
+import ch.inagua.watchlion.test.file.FileUtils;
 
 public class WatchlionTest {
 
@@ -44,10 +46,10 @@ public class WatchlionTest {
 
 	@Test
 	public void test_delta() throws Exception {
-		String refJSON = getClass().getResource("/WatchlionDiffTest/watchlion.ref.json").getPath();
+		String refJSON = FileUtils.getPathOf("/WatchlionDiffTest/watchlion.ref.json");
 		Environment reference = new WatchlionLoader().loadFromJSONFile(refJSON);
 
-		String localJSON = getClass().getResource("/WatchlionDiffTest/watchlion.local.json").getPath();
+		String localJSON = FileUtils.getPathOf("/WatchlionDiffTest/watchlion.local.json");
 		Environment local = new WatchlionLoader().loadFromJSONFile(localJSON);
 		
 		Watchlion watchlion = new Watchlion(reference, local);
@@ -78,10 +80,10 @@ public class WatchlionTest {
 
 	@Test
 	public void test_report() throws Exception {
-		String refJSON = getClass().getResource("/WatchlionDiffTest/watchlion.ref.json").getPath();
+		String refJSON = FileUtils.getPathOf("/WatchlionDiffTest/watchlion.ref.json");
 		Environment reference = new WatchlionLoader().loadFromJSONFile(refJSON);
 
-		String localJSON = getClass().getResource("/WatchlionDiffTest/watchlion.local.json").getPath();
+		String localJSON = FileUtils.getPathOf("/WatchlionDiffTest/watchlion.local.json");
 		Environment local = new WatchlionLoader().loadFromJSONFile(localJSON);
 		
 		Watchlion watchlion = new Watchlion(reference, local);
